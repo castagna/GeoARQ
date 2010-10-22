@@ -45,6 +45,7 @@ Todo
    (i.e. geoarq:near (51.3000 -2.71000 20 10))
  * Investigate Geohash [2]
  * Double check lucene-misc dependency, is it necessary?
+ * Add ability to index remote SPARQL endpoints?
  * ...
 
 

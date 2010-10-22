@@ -49,6 +49,6 @@ Todo
  * ...
 
 
-
  [1] http://www.w3.org/2003/01/geo/wgs84_pos#
+
  [2] http://en.wikipedia.org/wiki/Geohash

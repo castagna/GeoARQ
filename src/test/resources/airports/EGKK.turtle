@@ -1,0 +1,69 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dctype: <http://purl.org/dc/dcmitype/> .
+@prefix ns0: <http://airports.dataincubator.org/airports/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns1: <http://airports.dataincubator.org/regions/> .
+@prefix msg0: <http://airports.dataincubator.org/schema/> .
+@prefix ns2: <http://airports.dataincubator.org/continents/> .
+@prefix property: <http://dbpedia.org/property/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ns3: <http://airports.dataincubator.org/codes/iata/> .
+@prefix wiki: <http://en.wikipedia.org/wiki/> .
+@prefix dbpo: <http://dbpedia.org/ontology/> .
+@prefix ns4: <http://airports.dataincubator.org/countries/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dbp: <http://dbpedia.org/resource/> .
+@prefix air: <http://www.daml.org/2001/10/html/airport-ont#> .
+@prefix ns5: <http://airports.dataincubator.org/regions/GB-ENG/> .
+
+<http://airports.dataincubator.org/airports/EGKK.turtle> rdf:type foaf:Document ,
+                                                                  dctype:Text ;
+                                                         foaf:primaryTopic ns0:EGKK ;
+                                                         dct:hasFormat <http://airports.dataincubator.org/airports/EGKK.rdf> ,
+                                                                       <http://airports.dataincubator.org/airports/EGKK.html> ,
+                                                                       <http://airports.dataincubator.org/airports/EGKK.json> ;
+                                                         foaf:topic ns0:EGKK .
+
+<http://airports.dataincubator.org/airports/EGKK.rdf> rdf:type dctype:Text ,
+                                                               foaf:Document ;
+                                                      dc:format "application/rdf+xml" ;
+                                                      rdfs:label "RDF/XML" .
+
+<http://airports.dataincubator.org/airports/EGKK.html> rdf:type dctype:Text ,
+                                                                foaf:Document ;
+                                                       dc:format "text/html" ;
+                                                       rdfs:label "HTML" .
+
+<http://airports.dataincubator.org/airports/EGKK.json> rdf:type dctype:Text ,
+                                                                foaf:Document ;
+                                                       dc:format "application/json" ;
+                                                       rdfs:label "JSON" .
+
+ns1:GB-ENG rdfs:label "England" .
+
+ns0:EGKK msg0:continent ns2:EU ;
+         property:iata "LGW" ;
+         geo:lat "51.1481"^^xsd:float ;
+         foaf:homepage <http://www.gatwickairport.com/> ;
+         rdfs:label "London Gatwick Airport" ;
+         geo:alt "61.5696"^^xsd:float ;
+         msg0:region ns1:GB-ENG ;
+         msg0:code ns3:LGW ;
+         foaf:isPrimaryTopicOf <http://ourairports.com/airports/EGKK/> ,
+                               wiki:London_Gatwick_Airport ;
+         geo:long "-0.190278"^^xsd:float ;
+         dbpo:elevation "202"^^xsd:float ;
+         rdf:type msg0:LargeAirport ;
+         msg0:weather <http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=LGW> ;
+         msg0:country ns4:GB ;
+         owl:sameAs dbp:London_Gatwick_Airport ;
+         air:iataCode "LGW" ;
+         msg0:municipality ns5:London .
+
+msg0:LargeAirport rdfs:label "Large Airport"@en .
+
+ns4:GB rdfs:label "United Kingdom" .

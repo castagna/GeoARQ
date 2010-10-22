@@ -1,0 +1,39 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix dbp: <http://dbpedia.org/resource/> .
+@prefix airports: <http://airports.dataincubator.org/airports/> .
+@prefix airports_sc: <http://airports.dataincubator.org/schema/> .
+
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+airports:EGBB rdf:type airports_sc:LargeAirport ;
+    geo:lat "52.4539"^^xsd:float ;
+    geo:long "-1.74803"^^xsd:float ;
+    rdfs:label "Birmingham International Airport"
+    .
+
+airports:EGFF rdf:type airports_sc:LargeAirport ;
+    geo:lat "51.3967"^^xsd:float ;
+    geo:long "-3.34333"^^xsd:float ;
+    rdfs:label "Cardiff International Airport"
+    .
+
+airports:EGGD rdf:type airports_sc:LargeAirport ;
+    geo:lat "51.3827"^^xsd:float ;
+    geo:long "-2.71909"^^xsd:float ;
+    rdfs:label "Bristol International Airport"
+    .
+
+airports:EGKK rdf:type airports_sc:LargeAirport ;
+    geo:lat "51.1481"^^xsd:float ;
+    geo:long "-0.190278"^^xsd:float ;
+    rdfs:label "London Gatwick Airport"
+    .
+
+airports:EGSS rdf:type airports_sc:LargeAirport ;
+    geo:lat "51.885"^^xsd:float ;
+    geo:long "0.235"^^xsd:float ;
+    rdfs:label "London Stansted Airport"
+    .

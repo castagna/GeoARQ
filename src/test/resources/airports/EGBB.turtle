@@ -1,0 +1,67 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dctype: <http://purl.org/dc/dcmitype/> .
+@prefix ns0: <http://airports.dataincubator.org/airports/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns1: <http://airports.dataincubator.org/regions/> .
+@prefix msg0: <http://airports.dataincubator.org/schema/> .
+@prefix ns2: <http://airports.dataincubator.org/continents/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix property: <http://dbpedia.org/property/> .
+@prefix ns3: <http://airports.dataincubator.org/codes/iata/> .
+@prefix dbpo: <http://dbpedia.org/ontology/> .
+@prefix ns4: <http://airports.dataincubator.org/countries/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ns5: <http://airports.dataincubator.org/regions/GB-ENG/> .
+@prefix air: <http://www.daml.org/2001/10/html/airport-ont#> .
+
+<http://airports.dataincubator.org/airports/EGBB.turtle> rdf:type foaf:Document ,
+                                                                  dctype:Text ;
+                                                         foaf:primaryTopic ns0:EGBB ;
+                                                         dct:hasFormat <http://airports.dataincubator.org/airports/EGBB.rdf> ,
+                                                                       <http://airports.dataincubator.org/airports/EGBB.html> ,
+                                                                       <http://airports.dataincubator.org/airports/EGBB.json> ;
+                                                         foaf:topic ns0:EGBB .
+
+<http://airports.dataincubator.org/airports/EGBB.rdf> rdf:type dctype:Text ,
+                                                               foaf:Document ;
+                                                      dc:format "application/rdf+xml" ;
+                                                      rdfs:label "RDF/XML" .
+
+<http://airports.dataincubator.org/airports/EGBB.html> rdf:type dctype:Text ,
+                                                                foaf:Document ;
+                                                       dc:format "text/html" ;
+                                                       rdfs:label "HTML" .
+
+<http://airports.dataincubator.org/airports/EGBB.json> rdf:type dctype:Text ,
+                                                                foaf:Document ;
+                                                       dc:format "application/json" ;
+                                                       rdfs:label "JSON" .
+
+ns1:GB-ENG rdfs:label "England" .
+
+msg0:LargeAirport rdfs:label "Large Airport"@en .
+
+ns0:EGBB msg0:continent ns2:EU ;
+         geo:lat "52.4539"^^xsd:float ;
+         property:iata "BHX" ;
+         foaf:homepage <http://www.bhx.co.uk/> ;
+         rdfs:label "Birmingham International Airport" ;
+         geo:alt "99.6696"^^xsd:float ;
+         msg0:region ns1:GB-ENG ;
+         msg0:code ns3:BHX ;
+         foaf:isPrimaryTopicOf <http://en.wikipedia.org/wiki/Birmingham_International_Airport_(United_Kingdom)> ,
+                               <http://ourairports.com/airports/EGBB/> ;
+         geo:long "-1.74803"^^xsd:float ;
+         dbpo:elevation "327"^^xsd:float ;
+         rdf:type msg0:LargeAirport ;
+         msg0:weather <http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=BHX> ;
+         msg0:country ns4:GB ;
+         owl:sameAs <http://dbpedia.org/resource/Birmingham_International_Airport_(United_Kingdom)> ;
+         msg0:municipality ns5:Birmingham ;
+         air:iataCode "BHX" .
+
+ns4:GB rdfs:label "United Kingdom" .

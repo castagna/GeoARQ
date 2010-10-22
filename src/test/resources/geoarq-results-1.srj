@@ -1,0 +1,20 @@
+{
+  "head": {
+    "vars": [ "airport" ]
+  } ,
+  "results": {
+    "distinct": false ,
+    "ordered": false ,
+    "bindings": [
+      {
+        "airport": { "type": "literal" , "value": "Bristol International Airport" }
+      } ,
+      {
+        "airport": { "type": "literal" , "value": "Cardiff International Airport" }
+      } ,
+      {
+        "airport": { "type": "literal" , "value": "Birmingham International Airport" }
+      }
+    ]
+  }
+}

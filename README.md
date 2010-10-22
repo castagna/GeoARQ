@@ -22,7 +22,7 @@ This is how you configure ARQ to use the spatial Lucene index:
     IndexSearcher searcher = IndexSearcherFactory.create("target/lucene");
     GeoARQ.setDefaultIndex(searcher);
 
-This is an example of a SPARQL query using the sarq:search property function: 
+This is an example of a SPARQL query using the :near property function to find airports close to Bristol (i.e. latitude ~ 51.3000, longitude ~ -2.71000): 
 
     PREFIX : <http://example/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -49,6 +49,6 @@ Todo
  * ...
 
 
-
  [1] http://www.w3.org/2003/01/geo/wgs84_pos#
+
  [2] http://en.wikipedia.org/wiki/Geohash

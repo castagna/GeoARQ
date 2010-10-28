@@ -114,7 +114,7 @@ public class LuceneIndexSearcher extends IndexSearcherBase implements IndexSearc
 		Searcher indexSearcher = new org.apache.lucene.search.IndexSearcher(indexReader);
 		BooleanQuery luceneQuery = new BooleanQuery();
 		luceneQuery.add(NumericRangeQuery.newDoubleRange(GeoARQ.fLat2, latitude1, latitude2, true, true), Occur.MUST);
-//		luceneQuery.add(NumericRangeQuery.newDoubleRange(GeoARQ.fLong2, longitude1, longitude2, true, true), Occur.MUST);
+		luceneQuery.add(NumericRangeQuery.newDoubleRange(GeoARQ.fLong2, longitude1, longitude2, true, true), Occur.MUST);
 		ArrayList<Document> hits = new ArrayList<Document>();
 		try {
 			// TODO: use a Collector to retrieve all the results
@@ -126,8 +126,8 @@ public class LuceneIndexSearcher extends IndexSearcherBase implements IndexSearc
 				doc.set(GeoARQ.fURI, luceneDocument.get(GeoARQ.fURI));
 				doc.set(GeoARQ.fLat, Double.toString(NumericUtils.prefixCodedToDouble(luceneDocument.get(GeoARQ.fLat))));
 				doc.set(GeoARQ.fLong, Double.toString(NumericUtils.prefixCodedToDouble(luceneDocument.get(GeoARQ.fLong))));
-				doc.set(GeoARQ.fLat2, Double.toString(NumericUtils.prefixCodedToDouble(luceneDocument.get(GeoARQ.fLat2))));
-				doc.set(GeoARQ.fLong2, Double.toString(NumericUtils.prefixCodedToDouble(luceneDocument.get(GeoARQ.fLong2))));
+				doc.set(GeoARQ.fLat2, luceneDocument.get(GeoARQ.fLat2));
+				doc.set(GeoARQ.fLong2, luceneDocument.get(GeoARQ.fLong2));
 				hits.add(doc);				
 			}
 		} catch (Exception e) {

@@ -17,6 +17,7 @@
 package org.openjena.geoarq;
 
 import org.openjena.geoarq.pfunction.nearby;
+import org.openjena.geoarq.pfunction.within;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.ARQ;
@@ -44,6 +45,7 @@ public class GeoARQ {
 
     static {
     	PropertyFunctionRegistry.get().put(GeoARQPropertyFunctionLibraryURI + "nearby", nearby.class);
+    	PropertyFunctionRegistry.get().put(GeoARQPropertyFunctionLibraryURI + "within", within.class);
     }
     
     public static void setDefaultIndex(IndexSearcher index) { 

@@ -3,6 +3,6 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX geoarq: <http://openjena.org/GeoARQ/property#>
 
 SELECT ?airport {
-    ?s geoarq:within (50.3000 -2.21000 58.3000 2.70000) .
+    ?s geoarq:within (51.3727 -2.72909 51.3927 -2.70909) .
     ?s rdfs:label ?airport .
 }

@@ -1,0 +1,14 @@
+{
+  "head": {
+    "vars": [ "airport" ]
+  } ,
+  "results": {
+    "distinct": false ,
+    "ordered": false ,
+    "bindings": [
+      {
+        "airport": { "type": "literal" , "value": "Bristol International Airport" }
+      }
+    ]
+  }
+}

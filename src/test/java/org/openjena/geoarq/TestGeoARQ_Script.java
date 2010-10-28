@@ -72,4 +72,8 @@ public abstract class TestGeoARQ_Script {
     	runTestScript("geoarq-query-1.rq", "geoarq-data-1.ttl", "geoarq-results-1.srj", new ModelIndexerSubject(location)) ; 
     }
 
+    @Test public void test_geoarq_2() { 
+    	runTestScript("geoarq-query-2.rq", "geoarq-data-1.ttl", "geoarq-results-2.srj", new ModelIndexerSubject(location)) ; 
+    }
+
 }

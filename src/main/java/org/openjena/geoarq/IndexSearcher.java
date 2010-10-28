@@ -22,7 +22,12 @@ import com.hp.hpl.jena.graph.Node;
 
 public interface IndexSearcher {
 
-	public Iterator<Document> near(double latitude, double longitude, double miles);
+	// nearby
+	public Iterator<Document> nearby(double latitude, double longitude, double miles);
 	public Document contains(Node node, double latitude, double longitude, double miles);
+
+	// within
+	public Iterator<Document> within(double latitude1, double longitude1, double latitude2, double longitude2);
+	public Document contains(Node node, double latitude1, double longitude1, double latitude2, double longitude2);
 	
 }

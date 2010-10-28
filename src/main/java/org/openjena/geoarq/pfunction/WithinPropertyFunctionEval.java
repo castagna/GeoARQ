@@ -46,11 +46,11 @@ import com.hp.hpl.jena.sparql.util.IterLib;
 import com.hp.hpl.jena.sparql.util.NodeFactory;
 import com.hp.hpl.jena.util.iterator.Map1Iterator;
 
-public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
+public abstract class WithinPropertyFunctionEval extends PropertyFunctionEval {
 
-	private static final Logger LOG = LoggerFactory.getLogger(NearPropertyFunctionEval.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WithinPropertyFunctionEval.class);
 	
-	protected NearPropertyFunctionEval() {
+	protected WithinPropertyFunctionEval() {
         super(PropFuncArgType.PF_ARG_EITHER, PropFuncArgType.PF_ARG_LIST);
     }
 
@@ -67,8 +67,8 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
         	throw new QueryBuildException("Subject has " + argSubject.getArgList().size() + " elements, not 2: " + argSubject) ;
         }
         
-        if ( argObject.isList() && (argObject.getArgListSize() != 2 && argObject.getArgListSize() != 3) ) {
-        	throw new QueryBuildException("Object has "+argObject.getArgList().size()+" elements, not 2 or 3: " + argObject) ;
+        if ( argObject.isList() && ( argObject.getArgListSize() != 4 ) ) {
+        	throw new QueryBuildException("Object has "+argObject.getArgList().size()+" elements, not 4: " + argObject) ;
         }
     }
     
@@ -86,8 +86,10 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
         Node match = null ;
         Node score = null ;
         
-        Node latitude = null ;
-        Node longitude = null ;
+        Node latitude1 = null ;
+        Node longitude1 = null ;
+        Node latitude2 = null ;
+        Node longitude2 = null ;
         
         long limit = Query.NOLIMIT ;
         float scoreLimit = -1.0f ;
@@ -107,8 +109,10 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
         
         if ( argObject.isList() ) {
             // Length checked in build
-            latitude = argObject.getArg(0) ;
-            longitude = argObject.getArg(1) ;
+            latitude1 = argObject.getArg(0) ;
+            longitude1 = argObject.getArg(1) ;
+            latitude2 = argObject.getArg(2) ;
+            longitude2 = argObject.getArg(3) ;
             
 //            for ( int i = 2 ; i < argObject.getArgListSize() ; i++ ) {
 //                Node n = argObject.getArg(i) ;
@@ -142,7 +146,7 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
                 scoreLimit = 0.0f ;
             }
 
-            if ( ! isValidLatitudeLongitude(latitude, longitude) ) {
+            if ( ( ! isValidLatitudeLongitude(latitude1, longitude1) ) || ( ! isValidLatitudeLongitude(latitude2, longitude2) ) ) {
                 return new QueryIterNullIterator(execCxt) ;
             }
 //        } else {
@@ -151,29 +155,43 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
 //            scoreLimit = 0.0f ;
         }
         
-        if ( !isValidLatitudeLongitude(latitude, longitude) ) {
+        if ( ( !isValidLatitudeLongitude(latitude1, longitude1) ) || ( !isValidLatitudeLongitude(latitude2, longitude2) ) ) {
             return IterLib.noResults(execCxt) ;
         }
 
-        Double lat = asDouble(latitude) ;
-        Double lgt = asDouble(longitude) ;
+        Double lat1 = asDouble(latitude1) ;
+        Double lgt1 = asDouble(longitude1) ;
         
-        if ( lat == null ) {
-            LOG.warn("Not a double (it was a moment ago!): " + latitude) ;
+        if ( lat1 == null ) {
+            LOG.warn("Not a double (it was a moment ago!): " + latitude1) ;
             return new QueryIterNullIterator(execCxt) ;
         }
 
-        if ( lgt == null ) {
-            LOG.warn("Not a double (it was a moment ago!): " + longitude) ;
+        if ( lgt1 == null ) {
+            LOG.warn("Not a double (it was a moment ago!): " + longitude1) ;
             return new QueryIterNullIterator(execCxt) ;
         }
 
+        Double lat2 = asDouble(latitude2) ;
+        Double lgt2 = asDouble(longitude2) ;
+        
+        if ( lat2 == null ) {
+            LOG.warn("Not a double (it was a moment ago!): " + latitude2) ;
+            return new QueryIterNullIterator(execCxt) ;
+        }
+
+        if ( lgt2 == null ) {
+            LOG.warn("Not a double (it was a moment ago!): " + longitude2) ;
+            return new QueryIterNullIterator(execCxt) ;
+        }
+        
         Var scoreVar = (score==null)?null:Var.alloc(score) ;
         
         if ( match.isVariable() ) {
-            return varSubject(binding, Var.alloc(match), scoreVar, lat, lgt, 100.0, limit, scoreLimit, execCxt) ;
+        	// Miles should be read from use input!
+            return varSubject(binding, Var.alloc(match), scoreVar, lat1, lgt1, lat2, lgt2, limit, scoreLimit, execCxt) ;
         } else {
-            return boundSubject(binding, match, scoreVar, lat, lgt, 100.0, limit, scoreLimit, execCxt) ;
+            return boundSubject(binding, match, scoreVar, lat1, lgt1, lat2, lgt2, limit, scoreLimit, execCxt) ;
         }
     }
     
@@ -206,8 +224,8 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
         return true ;
     }
     
-    public QueryIterator varSubject(Binding binding, Var match, Var score, double latitude, double longitude, double miles, long limit, float scoreLimit, ExecutionContext execCxt) {
-        Iterator<Document> iter = getIndexSearcher(execCxt).near(latitude, longitude, miles) ;
+    public QueryIterator varSubject(Binding binding, Var match, Var score, double latitude1, double longitude1, double latitude2, double longitude2, long limit, float scoreLimit, ExecutionContext execCxt) {
+        Iterator<Document> iter = getIndexSearcher(execCxt).within(latitude1, longitude1, latitude2, longitude2) ;
         
         if ( scoreLimit > 0 ) {
             iter = new IteratorTruncate<Document>(new ScoreTest(scoreLimit), iter) ;
@@ -223,8 +241,8 @@ public abstract class NearPropertyFunctionEval extends PropertyFunctionEval {
         return qIter ;
     }
     
-    public QueryIterator boundSubject(Binding binding, Node match, Var score, double latitude, double longitude, double miles, long limit, float scoreLimit, ExecutionContext execCxt) {
-        Document doc = getIndexSearcher(execCxt).contains(match, latitude, longitude, miles) ;
+    public QueryIterator boundSubject(Binding binding, Node match, Var score, double latitude1, double longitude1, double latitude2, double longitude2, long limit, float scoreLimit, ExecutionContext execCxt) {
+        Document doc = getIndexSearcher(execCxt).contains(match, latitude1, longitude1, latitude2, longitude2) ;
         
         if ( doc == null ) {
             return new QueryIterNullIterator(execCxt) ;

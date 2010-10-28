@@ -21,7 +21,7 @@ import org.openjena.geoarq.IndexSearcher;
 
 import com.hp.hpl.jena.sparql.engine.ExecutionContext;
 
-public class near extends NearPropertyFunctionEval {
+public class within extends WithinPropertyFunctionEval {
 
 	private IndexSearcher index = null ;
 

@@ -16,7 +16,7 @@
 
 package org.openjena.geoarq;
 
-import org.openjena.geoarq.pfunction.near;
+import org.openjena.geoarq.pfunction.nearby;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.ARQ;
@@ -33,6 +33,8 @@ public class GeoARQ {
     public static final String fBNodeID = "bnode" ;
     public static final String fLat = "lat" ;
     public static final String fLong = "long" ;
+    public static final String fLat2 = "lat2" ;
+    public static final String fLong2 = "long2" ;
     public static final String fDistance = "distance" ;
     public static final String fScore = "score" ;
     public static final String fTierPrefix = "_localTier";
@@ -41,7 +43,7 @@ public class GeoARQ {
     public static final Symbol indexKey = ARQConstants.allocSymbol("geoarq") ;
 
     static {
-    	PropertyFunctionRegistry.get().put(GeoARQPropertyFunctionLibraryURI + "near", near.class);
+    	PropertyFunctionRegistry.get().put(GeoARQPropertyFunctionLibraryURI + "nearby", nearby.class);
     }
     
     public static void setDefaultIndex(IndexSearcher index) { 

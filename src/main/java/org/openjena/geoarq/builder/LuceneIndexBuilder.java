@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
@@ -80,10 +81,12 @@ public class LuceneIndexBuilder extends IndexBuilderBase {
 				latitude = Double.parseDouble(doc.get(name));
 				String value = NumericUtils.doubleToPrefixCoded(latitude);
 				luceneDoc.add( new Field(name, value, Field.Store.YES, Field.Index.NOT_ANALYZED) ) ;
+				luceneDoc.add( new NumericField(GeoARQ.fLat2).setDoubleValue(latitude) ) ;
 			} else if ( GeoARQ.fLong.equals(name) ) {
 				longitude = Double.parseDouble(doc.get(name));
 				String value = NumericUtils.doubleToPrefixCoded(longitude);
 				luceneDoc.add( new Field(name, value, Field.Store.YES, Field.Index.NOT_ANALYZED) ) ;
+				luceneDoc.add( new NumericField(GeoARQ.fLong2).setDoubleValue(longitude) ) ;
 			} else {
 				luceneDoc.add( new Field(name, doc.get(name), Field.Store.YES, Field.Index.NO) ) ;
 			}

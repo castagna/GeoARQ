@@ -32,84 +32,93 @@ import com.hp.hpl.jena.rdf.model.Statement;
 public class ModelIndexerSubject extends ModelIndexerBase {
 
 	private final static String namespace = "http://www.w3.org/2003/01/geo/wgs84_pos#";
-	private final static Property latitude = ResourceFactory.createProperty(namespace + "lat");
-    private final static Property longitude = ResourceFactory.createProperty(namespace + "long");
-    
-    private Map<String, Double> latitudes = new HashMap<String, Double>();
-    private Map<String, Double> longitudes = new HashMap<String, Double>();
-    
-    public ModelIndexerSubject(String url) { 
-    	super(url) ; 
-    }
-    
-    @Override
-    public void unindexStatement(Statement s) { 
-        if ( ! indexThisStatement(s) )
-            return ;
+	private final static Property latitude = ResourceFactory
+			.createProperty(namespace + "lat");
+	private final static Property longitude = ResourceFactory
+			.createProperty(namespace + "long");
 
-        try {
-            Node subject = s.getSubject().asNode() ;
+	private Map<String, Double> latitudes = new HashMap<String, Double>();
+	private Map<String, Double> longitudes = new HashMap<String, Double>();
 
-            if ( ! s.getObject().isLiteral() || ! isFloat(s.getLiteral()) ) {
-                return ;
-            }
+	public ModelIndexerSubject(String url) {
+		super(url);
+	}
 
-            builder.unindex(subject.getURI()) ;
-        } catch (Exception e) { 
-        	throw new GeoARQException("unindexStatement", e) ; 
-        }
-    }
-    
-    @Override
-    public void indexStatement(Statement s) {
-        if ( ! indexThisStatement(s) ) {
-            return ;
-        }
-        
-        try {
-            Node subject = s.getSubject().asNode() ;
+	@Override
+	public void unindexStatement(Statement s) {
+		if (!indexThisStatement(s))
+			return;
 
-            if ( ! s.getObject().isLiteral() || ! isFloat(s.getLiteral()) ) {
-                return ;
-            }
+		try {
+			Node subject = s.getSubject().asNode();
 
-            if ( s.getPredicate().equals(latitude) ) {
-            	if ( longitudes.containsKey(subject.getURI()) ) {
-                    builder.index(subject.getURI(), Double.parseDouble(s.getObject().asLiteral().getLexicalForm()), longitudes.get(subject.getURI())) ;
-                    remove(subject.getURI());
-            	} else {
-            		latitudes.put(subject.getURI(), Double.parseDouble(s.getObject().asLiteral().getLexicalForm()));
-            	}
-            } else {
-            	if ( latitudes.containsKey(subject.getURI()) ) {
-                    builder.index(subject.getURI(), latitudes.get(subject.getURI()), Double.parseDouble(s.getObject().asLiteral().getLexicalForm())) ;            		
-                    remove(subject.getURI());
-            	} else {
-            		longitudes.put(subject.getURI(), Double.parseDouble(s.getObject().asLiteral().getLexicalForm()));
-            	}
-            }
-        } catch (Exception e) { 
-        	throw new GeoARQException("indexStatement", e) ; 
-        }
-    }
+			if (!s.getObject().isLiteral() || !isDecimal(s.getLiteral())) {
+				return;
+			}
 
-    protected boolean indexThisStatement(Statement s) {  
-        return ( ( s.getPredicate().equals(latitude) ) ||
-        		 ( s.getPredicate().equals(longitude) ) ) ;
-    }
+			builder.unindex(subject.getURI());
+		} catch (Exception e) {
+			throw new GeoARQException("unindexStatement", e);
+		}
+	}
 
-    private boolean isFloat(Literal literal) {
+	@Override
+	public void indexStatement(Statement s) {
+		if (!indexThisStatement(s)) {
+			return;
+		}
+
+		try {
+			Node subject = s.getSubject().asNode();
+
+			if (!s.getObject().isLiteral() || !isDecimal(s.getLiteral())) {
+				return;
+			}
+
+			if (s.getPredicate().equals(latitude)) {
+				if (longitudes.containsKey(subject.getURI())) {
+					builder.index(subject.getURI(), Double.parseDouble(s
+							.getObject().asLiteral().getLexicalForm()),
+							longitudes.get(subject.getURI()));
+					remove(subject.getURI());
+				} else {
+					latitudes.put(subject.getURI(), Double.parseDouble(s
+							.getObject().asLiteral().getLexicalForm()));
+				}
+			} else {
+				if (latitudes.containsKey(subject.getURI())) {
+					builder.index(subject.getURI(), latitudes.get(subject
+							.getURI()), Double.parseDouble(s.getObject()
+							.asLiteral().getLexicalForm()));
+					remove(subject.getURI());
+				} else {
+					longitudes.put(subject.getURI(), Double.parseDouble(s
+							.getObject().asLiteral().getLexicalForm()));
+				}
+			}
+		} catch (Exception e) {
+			throw new GeoARQException("indexStatement", e);
+		}
+	}
+
+	protected boolean indexThisStatement(Statement s) {
+		return ((s.getPredicate().equals(latitude)) || (s.getPredicate().equals(longitude)));
+	}
+
+	private boolean isDecimal(Literal literal) {
         RDFDatatype dtype = literal.getDatatype() ;
         if ( dtype == null )
             return false ;
-        if ( dtype.equals(XSDDatatype.XSDfloat) )
+        if ( ( dtype.equals(XSDDatatype.XSDfloat) ) ||
+             ( dtype.equals(XSDDatatype.XSDdecimal) ) ||  
+             ( dtype.equals(XSDDatatype.XSDdouble) ) )
             return true ;
         return false ;
     }
 
-    private void remove(String uri) {
-        latitudes.remove(uri);
-        longitudes.remove(uri);
-    }
+	private void remove(String uri) {
+		latitudes.remove(uri);
+		longitudes.remove(uri);
+	}
 
 }

@@ -53,7 +53,7 @@ public class LuceneIndexBuilderTest {
 		assertEquals(3, count());
 		
 		IndexSearcher indexSearcher = IndexSearcherFactory.create(location);
-		Iterator<Document> hits = indexSearcher.near(38.8725000, -77.3829000, 8);
+		Iterator<Document> hits = indexSearcher.nearby(38.8725000, -77.3829000, 8);
 
 		assertNotNull(hits);
 		

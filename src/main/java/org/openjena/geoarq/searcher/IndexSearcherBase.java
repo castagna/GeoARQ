@@ -27,12 +27,12 @@ import com.hp.hpl.jena.graph.Node;
 
 public abstract class IndexSearcherBase implements IndexSearcher {
 
-	@Override public abstract Iterator<Document> near(double latitude, double longitude, double miles);
+	@Override public abstract Iterator<Document> nearby(double latitude, double longitude, double miles);
 	
 	@Override
     public Document contains(Node node, double latitude, double longitude, double miles) {
         try {
-            Iterator<Document> iter = near(latitude, longitude, miles) ;
+            Iterator<Document> iter = nearby(latitude, longitude, miles) ;
             for ( ; iter.hasNext() ; ) {
                 Document x = iter.next();
                 if ( x != null && GeoARQ.build(x).equals(node)) {
@@ -42,7 +42,23 @@ public abstract class IndexSearcherBase implements IndexSearcher {
             return null ;
         } catch (Exception e) { 
         	throw new GeoARQException("contains", e) ; 
-        }   	
+        }
     }
+
+	@Override
+	public Document contains(Node node, double latitude1, double longitude1, double latitude2, double longitude2) {
+        try {
+            Iterator<Document> iter = within(latitude1, longitude1, latitude2, longitude2) ;
+            for ( ; iter.hasNext() ; ) {
+                Document x = iter.next();
+                if ( x != null && GeoARQ.build(x).equals(node)) {
+                    return x ;
+                }
+            }
+            return null ;
+        } catch (Exception e) { 
+        	throw new GeoARQException("contains", e) ; 
+        } 
+	}
 
 }
